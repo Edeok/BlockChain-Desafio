@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const {
+const { 
   getRole,
   verify,
   ex,
@@ -10,46 +10,48 @@ const {
 } = require("../utils");
 
 const { getRootFromMT } = require("../utils/merkleTree");
-
 var MINTER_ROLE = getRole("MINTER_ROLE");
 var BURNER_ROLE = getRole("BURNER_ROLE");
 
-// Publicar NFT en Mumbai
-async function deployMumbai() {
-  var relAddMumbai; // relayer mumbai
-  var name = "Chose a name";
-  var symbol = "Chose a symbol";
-
-  // utiliza deploySC
-  // utiliza printAddress
-  // utiliza ex
-  // utiliza ex
-  // utiliza verify
-
-  await verify(implAdd, "CUYNFT");
-}
-
-// Publicar UDSC, Public Sale y Bbites Token en Goerli
 async function deployGoerli() {
-  var relAddGoerli; // relayer goerli
+  try {
+    var relAddGoerli = "0x6122D4939B63A37cbdFDD1E40564a7Afd5163708"; // Dirección del relayer en Goerli
 
-  // var psC Contrato
-  // deploySC;
-  // var bbitesToken Contrato
-  // deploySC;
-  // var usdc Contrato
-  // deploySC;
+  // Despliega el contrato PublicSale en Goerli utilizando deploySC
+    const publicSaleAddress = await deploySC(
+     "PublicSale", "PSALE",
+      relAddGoerli);
+    console.log("Contrato PublicSale desplegado en Goerli en la dirección:", publicSaleAddress);
 
-  // var impPS = await printAddress("PublicSale", await psC.getAddress());
-  // var impBT = await printAddress("BBitesToken", await bbitesToken.getAddress());
+   
 
-  // set up
-  // script para verificacion del contrato
+    // Despliega el contrato BBitesToken en Goerli utilizando deploySC
+    const bbitesTokenAddress = await deploySC(
+     "BBitesToken","BBTKN",
+      relAddGoerli);
+    console.log("Contrato BBitesToken desplegado en Goerli en la dirección:", bbitesTokenAddress);
+
+
+    // Despliega el contrato USDCoin en Goerli utilizando deploySC
+    const USDCoinAddress = await deploySC(
+     "USDCoin", "USDC", 
+      relAddGoerli);
+    console.log("Contrato USDCoin desplegado en Goerli en la dirección:", USDCoinAddress);
+
+    // Puedes configurar y realizar otras acciones necesarias para estos contratos aquí.
+
+    // Verifica los contratos en Goerli si es necesario
+    // await verify(publicSaleAddress, "PublicSale");
+    // await verify(bbitesTokenAddress, "BBitesToken");
+    // await verify(USDCoinAddress, "USDCoin");
+  } catch (error) {
+    console.error("Error al desplegar contratos en Goerli:", error);
+    process.exit(1);
+  }
 }
 
-deployMumbai()
-  // deployGoerli()
-  //
+// Llama a la función para desplegar los contratos en Goerli
+deployGoerli()
   .catch((error) => {
     console.error(error);
     process.exitCode = 1;

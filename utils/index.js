@@ -40,10 +40,9 @@ async function printAddress(contractName, proxyAddress) {
   console.log(`${contractName} Impl Address: ${implementationAddress}`);
   return implementationAddress;
 }
-
-async function deploySC(contractName, args = []) {
+async function deploySC(contractName) {
   var smartContract = await gcf(contractName);
-  var proxyContract = await dp(smartContract, [...args], {
+  var proxyContract = await dp(smartContract, [], {
     kind: "uups",
   });
   if (process.env.HARDHAT_NETWORK) {
@@ -53,6 +52,9 @@ async function deploySC(contractName, args = []) {
   }
   return proxyContract;
 }
+
+
+
 
 async function deploySCNoUp(contractName, args = []) {
   var smartContract = await dc(contractName, [...args]);
